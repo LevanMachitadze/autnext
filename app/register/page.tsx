@@ -23,12 +23,16 @@ import {
 
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { passwordMatchSchema } from '@/validation/passwordMatchSchema';
+import { registerUser } from './action';
 
-const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(5).max(50),
-  passwordConfirm: z.string(),
-});
+const formSchema = z
+  .object({
+    email: z.string().email(),
+    //   password: z.string().min(5).max(50),
+    //   passwordConfirm: z.string(),
+  })
+  .and(passwordMatchSchema);
 
 export default function RegisterPage() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -40,7 +44,14 @@ export default function RegisterPage() {
     },
   });
 
-  const handleSubmit = (data) => {};
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    const response = await registerUser({
+      email: data.email,
+      password: data.password,
+      passwordConfirm: data.passwordConfirm,
+    });
+    console.log(response);
+  };
 
   return (
     <main className='flex justify-center items-center min-h-screen'>
