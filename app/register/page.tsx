@@ -25,6 +25,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { passwordMatchSchema } from '@/validation/passwordMatchSchema';
 import { registerUser } from './action';
+import Link from 'next/link';
 
 const formSchema = z
   .object({
@@ -50,84 +51,104 @@ export default function RegisterPage() {
       password: data.password,
       passwordConfirm: data.passwordConfirm,
     });
-    console.log(response);
+    if (response?.error) {
+      form.setError('email', {
+        type: 'manual',
+        message: response?.message,
+      });
+    }
+    console.log(form.formState);
   };
 
   return (
     <main className='flex justify-center items-center min-h-screen'>
-      <Card className='w-[350px]'>
-        <CardHeader>
-          <CardTitle>Register</CardTitle>
-          <CardDescription>Register for a new account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <FormProvider {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleSubmit)}
-              className='gap-5 flex flex-col'
-            >
-              {' '}
-              {/* email field */}
-              <FormField
-                control={form.control}
-                name='email'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Enter Your Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder='email' {...field} />
-                    </FormControl>
+      {form.formState.isSubmitSuccessful ? (
+        <Card className='w-[350px]'>
+          <CardHeader>
+            <CardTitle>Your account has been Created</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Button className='w-full'>
+              <Link href='/login'>Login to your account</Link>
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <Card className='w-[350px]'>
+          <CardHeader>
+            <CardTitle>Register</CardTitle>
+            <CardDescription>Register for a new account</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <FormProvider {...form}>
+              <form onSubmit={form.handleSubmit(handleSubmit)}>
+                <fieldset
+                  className='gap-5 flex flex-col'
+                  disabled={form.formState.isSubmitting}
+                >
+                  {/* email field */}
+                  <FormField
+                    control={form.control}
+                    name='email'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Enter Your Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder='email' {...field} />
+                        </FormControl>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {/* password field */}
-              <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Enter Your Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='password'
-                        {...field}
-                        type='password'
-                      />
-                    </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {/* password field */}
+                  <FormField
+                    control={form.control}
+                    name='password'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Enter Your Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder='password'
+                            {...field}
+                            type='password'
+                          />
+                        </FormControl>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {/* confirm password field */}
-              <FormField
-                control={form.control}
-                name='passwordConfirm'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder='confirm passord'
-                        {...field}
-                        type='password'
-                      />
-                    </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  {/* confirm password field */}
+                  <FormField
+                    control={form.control}
+                    name='passwordConfirm'
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder='confirm passord'
+                            {...field}
+                            type='password'
+                          />
+                        </FormControl>
 
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type='submit'>Register</Button>
-            </form>
-          </FormProvider>
-        </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
-      </Card>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type='submit'>Register</Button>
+                </fieldset>
+              </form>
+            </FormProvider>
+          </CardContent>
+          <CardFooter>
+            <p>Card Footer</p>
+          </CardFooter>
+        </Card>
+      )}
     </main>
   );
 }
