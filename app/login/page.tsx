@@ -27,7 +27,6 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { passwordSchema } from '@/validation/passwordSchema';
 import { LoginWithCredentials } from './action';
-import { log } from 'console';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -120,8 +119,19 @@ export default function Login() {
             </form>
           </FormProvider>
         </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
+        <CardFooter className='flex flex-col gap-2'>
+          <div className='text-sm text-muted-foreground'>
+            Dont have an account?{' '}
+            <Link className='underline' href='/register'>
+              Register
+            </Link>
+          </div>
+          <div className='text-sm text-muted-foreground'>
+            Forget your password?
+            <Link className='underline' href='/reset-password'>
+              Reset password
+            </Link>
+          </div>
         </CardFooter>
       </Card>
     </main>
