@@ -15,9 +15,9 @@ export default async function LoggedInLayout({
   }
 
   return (
-    <div className='min-h-screen flex flex-col max-w-[1440px] w-full'>
+    <div className='min-h-screen flex flex-col max-w-[1600px] w-full'>
       <nav className='bg-gray-200 flex justify-between p-4 items-center'>
-        <ul>
+        <ul className='flex gap-4 '>
           <li>
             <Link href='/my-account'>
               {session?.user?.email && <div>{session.user?.email}</div>}
@@ -31,7 +31,7 @@ export default async function LoggedInLayout({
           <LogoutButton />
         </div>
       </nav>
-      <div className='flex1 flex justify-center items-center'>{children}</div>
+      <div className='flex-1 flex justify-center items-center'>{children}</div>
     </div>
   );
 }

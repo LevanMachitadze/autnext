@@ -128,7 +128,7 @@ export default function Login() {
           </div>
           <div className='text-sm text-muted-foreground'>
             Forget your password?
-            <Link className='underline' href='/reset-password'>
+            <Link className='underline' href='/password-reset'>
               Reset password
             </Link>
           </div>
