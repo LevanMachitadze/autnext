@@ -48,4 +48,10 @@ export const passwordReset = async (emailAddress: string) => {
       },
     });
   const resetLink = `${process.env.SITE_BASE_URL}/update-password?token=${passwordResetToken}`;
+  await mailer.sendMail({
+    from: 'test@resent.dev',
+    subject: 'Your password reset request',
+    to: { emailAddress },
+    html: `Hey , ${emailAddress}! Your password reset link: <a href"${resetLink}">${resetLink}</a> expire in 1 day`,
+  });
 };
